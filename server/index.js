@@ -9,13 +9,13 @@ var app = require('./app');
 var port = 3700;
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/podcast", {useNewUrlParser: true})
+mongoose.connect("mongodb://localhost:27017/podcast", {useNewUrlParser: true,  useUnifiedTopology: true})
 	
-	then(() => {
+	.then(() => {
 		console.log("the database has successfully connected");
-		app.listen(port => {
+		app.listen(port, () => {
 			console.log('the server is running in port: '+ port);
-		})
+		});
 	})
 
 	.catch((error) => {	console.log(error)	});
