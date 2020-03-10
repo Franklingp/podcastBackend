@@ -45,6 +45,10 @@ const userController = {
 				});
 			}
 		});
+	},
+
+	SingIn: function(req, res){
+		
 	}
 }
 

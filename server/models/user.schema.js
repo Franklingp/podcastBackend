@@ -18,7 +18,10 @@ const userSchema = Schema({
 });
 
 userSchema.pre('save', function(){
-	console.log(this);
+	if(this.isModified('password')){
+		const pass = bcypt.hashSync(this.password);
+		this.password = pass;
+	}
 	return true;
 });
 
