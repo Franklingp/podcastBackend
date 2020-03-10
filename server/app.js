@@ -7,6 +7,7 @@ const parser = require("body-parser");
 const app = express();
 
 //Imports of routes
+var userRoutes = require('./routes/user.routes');
 
 //Middlewares
 app.use(parser.urlencoded({extended:false}));
@@ -22,7 +23,7 @@ app.use((req, res, next) => {
 });
 
 //Routes
+app.use('/api/user', userRoutes);
 
 //Exports
-
 module.exports = app;
