@@ -3,6 +3,8 @@
 //Controller of users
 
 const User = require('../models/user.schema');
+const bcrypt = require('bcrypt-nodejs');
+const token = require('../service/token');
 
 const userController = {
 
@@ -47,8 +49,66 @@ const userController = {
 		});
 	},
 
-	SingIn: function(req, res){
-		
+	//Function to return a token and loggin an user
+	loggIn: function(req, res){
+		let user = {
+			primaryKey: req.body.primaryKey,
+			password: req.body.password
+		};
+
+		if(user.primaryKey.indexOf("@") == -1){
+			User.findOne({"nick": user.primaryKey}).exec((error,result)=>{
+				if(error){
+					return res.status(500).send({message: "An error has ocurred in the server"});
+				}
+				if(!result){
+					return res.status(404).send({message: "The user could not be found"});
+				}
+				if(result){
+					const pass = bcrypt.compareSync(user.password, result.password);
+					if(pass){
+						const tk = token.encode(result._id);
+						return res.status(200).send({message:"success", token: tk});
+					}else{
+						return res.status(301).send({message:"failed"});
+					}
+				}
+			});
+		}else{
+			User.findOne({'email': user.primaryKey}).exec((error,result)=>{
+				if(error){
+					return res.status(500).send({message: "An error has ocurred in the server"});
+				}
+				if(!result){
+					return res.status(404).send({message: "The user could not be found"});
+				}
+				if(result){
+					const pass = bcrypt.compareSync(user.password, result.password);
+					if(pass){
+						const tk = token.encode(result._id);
+						return res.status(200).send({message:"success", token: tk});
+					}else{
+						return res.status(301).send({message:"failed"});
+					}
+				}
+			});
+		}
+	},
+
+	//Function to update the data of an user
+	update: function(req, res){
+		let user = JSON.parse(JSON.stringify(req.body));
+		const id = req.params.id;
+
+		User.findByIdAndUpdate(id, user, {new: true, useFindAndModify:false}).exec((error, result) => {
+			if(error){
+				return res.status(500).send({message: "Has been failed"});
+			}
+			if(!result){ 
+				return res.status(404).send({message: "The user could not be found"});
+			}
+			return res.status(200).send({message: "success", data: result});
+		});
 	}
 }
 
