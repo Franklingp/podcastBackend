@@ -114,10 +114,10 @@ const userController = {
 	//Function to delete an user in the database
 	delete: function(req, res){
 		let id = req.params.id;
-		User.findByIdAndRemove(id).exec((error, result) => {
+		User.findByIdAndRemove(id, {useFindAndModify:false}).exec((error, result) => {
 			if(error) return res.status(500).send({message: "An error has ocurred in the server"});
-			if(!result) return res.status(404).senf({message: "User not found"});
-			return res.status(200).send({message: "The was deleted"});
+			if(!result) return res.status(404).send({message: "User not found"});
+			return res.status(200).send({message: "The user was deleted"});
 		});
 	}
 }

@@ -8,6 +8,8 @@ const app = express();
 
 //Imports of routes
 var userRoutes = require('./routes/user.routes');
+var audioRoutes = require('./routes/audio.routes');
+
 
 //Middlewares
 app.use(parser.urlencoded({extended:false}));
@@ -24,6 +26,7 @@ app.use((req, res, next) => {
 
 //Routes
 app.use('/api/user', userRoutes);
+app.use('/api/audio', audioRoutes);
 
 //Exports
 module.exports = app;
