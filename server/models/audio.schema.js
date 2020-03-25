@@ -9,7 +9,7 @@ const audio = Schema({
 	title: {type: String, lowercase: true},
 	artist: {type: String, lowercase: true},
 	date: {type: Date, default: Date.now()},
-	img: String,
+	image: String,
 	genere: {type: String, lowercase: true},
 	album: String,
 	location: String

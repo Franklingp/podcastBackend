@@ -12,19 +12,35 @@ const audioController = {
 	},
 
 	//Function to add a song of the data base
+	//This method not validate when the user upload only the audio or only the image
 	add: function(req, res){
-		console.log(req.file);
-		const file = req.file;
+		//console.log(req.files);
+		const files = req.files;
 		const request = req.body;
-		const audio = new Audio({request});
-		console.log(audio);
-
-		if(path.extname(file.originalname) !== '.mp3'){
+		if(files === undefined || Object.entries(files).length === 0 || Object.entries(files).length === 1){
 			//This is not the correct status for this response
 			return res.status(500).send({message: "The file is not a audio file"});
 		}
+		const audio = new Audio({
+			title: request.title,
+			artist: request.artist,
+			genere: request.genere,
+			album: request.album,
+			image: path.join(__dirname, '../uploads/image/' + files.image[0].originalname),
+			location: path.join(__dirname, '../uploads/audio/' + files.audio[0].originalname)
+		});
+		//console.log(audio);
 
-		return res.status(200).send({message: "function to add a song"});
+		audio.save((error, result) => {
+			if(error){
+				return res.status(500).send({message: 'there was an error trying to save the file'});
+			}
+			if(!result){
+				return res.status(404).send({messasge: 'Not found'});
+			}else{
+				return res.status(200).send({message: 'Has been saved', audio: result});
+			}
+		});
 	}
 };
 
