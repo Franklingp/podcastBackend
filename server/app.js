@@ -10,10 +10,14 @@ const app = express();
 var userRoutes = require('./routes/user.routes');
 var audioRoutes = require('./routes/audio.routes');
 
-
 //Middlewares
 app.use(parser.urlencoded({extended:false}));
 app.use(parser.json());
+
+//Static files
+app.use('/uploads',express.static('uploads'));
+// const dist = path.join(__dirname, 'uploads');
+// app.get('*.*', express.static(dist, { maxAge: '1y' }));
 
 //Cors configuration
 app.use((req, res, next) => {

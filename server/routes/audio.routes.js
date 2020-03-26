@@ -23,7 +23,9 @@ let storage = multer.diskStorage({
 	},
 	filename: (req, file, cb) => {
 		//cb(null, data.title + ' - ' + data.artist + path.extname(file.originalname));
-		cb(null, file.originalname);
+		// console.log(req.body);
+		// console.log(file);
+		cb(null, file.originalname.split(' ')[0] + Date.now() + path.extname(file.originalname));
 	}
 });
 const upload = multer({ 
@@ -58,5 +60,6 @@ const upload = multer({
 //routes
 route.get('/test', audioController.test);
 route.post('/add',upload.fields([{name: 'audio', maxCount: 1}, {name: 'image', maxCount: 1}]),audioController.add);
+route.get('/get/:id?', audioController.getAudio);
 
 module.exports = route;

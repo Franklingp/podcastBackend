@@ -4,7 +4,8 @@
 
 const jwt = require("jwt-simple");
 const moment = require("moment");
-const secret = "SecretKey";
+const config = require('../config')
+const secret = config.secret;
 
 const token = {
 
