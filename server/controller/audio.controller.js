@@ -150,7 +150,7 @@ const audioController = {
 								audio.genere = data.genere;
 								break;
 							default:
-								continue;
+								continue;useFindAndModify
 						}
 					}
 					audio.save((error, result) => {	return validate(error, result, res); });
@@ -158,6 +158,24 @@ const audioController = {
 			});
 			
 		}		
+	},
+
+	//Method to remove an audio (the files and the data) to te server
+	deleteAudio: function(req, res){
+		const id = req.params.id;
+		Audio.findByIdAndRemove(id, {useFindAndModify: false}).exec((error, result) => {
+			if(error){	return res.status(500).send({message: "Error when trying to remove the data"});	}
+			if(!result){	return res.status(404).send({message: "Could not found the data"});	}
+			else{
+				fs.unlink(path.join(__dirname, '../uploads/audio'+ "/" + result.location.split('/')[5]), (err)=>{
+					if(err){	return res.status(500).send({message: "There was an error when trying to delete the audio file"});	}
+				});
+				fs.unlink(path.join(__dirname, '../uploads/image'+ "/" + result.image.split('/')[5]), (err)=>{
+					if(err){	return res.status(500).send({message: "There was an error when trying to delete the image file"});	}
+				});
+				return res.status(200).send({message: "Success", audio: result});
+			}
+		});
 	}
 };
 
