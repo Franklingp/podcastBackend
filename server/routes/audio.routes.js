@@ -61,5 +61,6 @@ const upload = multer({
 route.get('/test', audioController.test);
 route.post('/add',upload.fields([{name: 'audio', maxCount: 1}, {name: 'image', maxCount: 1}]),audioController.add);
 route.get('/get/:id?', audioController.getAudio);
+route.put('/update/:id',upload.fields([{name: 'audio', maxCount: 1}, {name: 'image', maxCount: 1}]) ,audioController.updateAudio);
 
 module.exports = route;

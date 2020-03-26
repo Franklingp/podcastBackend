@@ -11,7 +11,7 @@ const audio = Schema({
 	date: {type: Date, default: Date.now()},
 	image: String,
 	genere: {type: String, lowercase: true},
-	album: String,
+	album: {type: String, lowercase: true},
 	location: String
 });
 

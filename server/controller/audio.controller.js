@@ -6,6 +6,7 @@ const Audio = require('../models/audio.schema');
 const path = require('path');
 const config = require('../config');
 const validate = require('../service/validate');
+const fs = require('fs');
 
 const audioController = {
 	//Function to test
@@ -81,6 +82,82 @@ const audioController = {
 					break;
 			}
 		}
+	},
+
+	//Method to delete the data of an audio
+	updateAudio: function(req, res){
+		const id = req.params.id;
+		let data = JSON.parse(JSON.stringify(req.body));
+		let files = req.files;
+		// console.log(data);
+		// console.log(req.files);
+
+		if(JSON.stringify(files) === '{}'){
+			Audio.findByIdAndUpdate(id, data, {new: true, useFindAndModify: false}).exec((error, result) => {
+				if(error){
+					return res.status(500).send({message: 'Error when trying to update'});
+				}
+				if(!result){
+					return res.status(404).send({message: 'Not found'});
+				}else{
+					return res.status(200).send({message: "Success", audio: result});
+				}
+			});
+		}else{
+			Audio.findById(id).exec((error, audio) => {
+				if(error){	return res.status(500).send({message: 'Error in the server'});	}
+				if(!audio) {	return res.status(404).send({message: 'The audio not found'});	}
+				else{
+					//This is to validate the files to update
+					let arrayFiles = Object.keys(files);
+					for(let file of arrayFiles){
+						if(file === "audio"){
+							data.location = config.url + '/uploads/audio/' + files.audio[0].filename;
+							fs.unlink(files.audio[0].destination + '/' + audio.location.split('/')[5], function(err){
+								if(error){	return res.status(500).send({message: 'Error in the server'});	}
+								//console.log('The audio was deleted');
+							});
+						}
+						if(file === "image"){
+							data.image = config.url + '/uploads/image/' + files.image[0].filename;
+							fs.unlink(files.image[0].destination + '/' + audio.image.split('/')[5], function(err){
+								if(error){	return res.status(500).send({message: 'Error in the server'});	}
+								//console.log('The image was deleted');
+							});
+						}
+					}
+
+					//In this section i set the new data of the user to the schema to save lather
+					const arrayData = Object.keys(data);
+					for(let i of arrayData){
+						switch(i){
+							case 'title':
+								audio.title = data.title;
+								break;
+							case 'album':
+								audio.album = data.album;
+								break;
+							case 'artist':
+								audio.artist = data.artist;
+								break;
+							case 'location':
+								audio.location = data.location;
+								break;
+							case 'image':
+								audio.image = data.image;
+								break;
+							case 'genere':
+								audio.genere = data.genere;
+								break;
+							default:
+								continue;
+						}
+					}
+					audio.save((error, result) => {	return validate(error, result, res); });
+				}
+			});
+			
+		}		
 	}
 };
 
