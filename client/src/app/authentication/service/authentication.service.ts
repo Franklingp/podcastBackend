@@ -10,13 +10,18 @@ export class AuthenticationService {
 	private url: string;
 
   constructor(	private _http: HttpClient	) { 
-  	this.headers = new HttpHeaders().set("Content-Type", "json/application");
+  	this.headers = new HttpHeaders().set("Content-Type", "application/json");
   	this.url = 'http://localhost:3700/api/user';
   }
 
   	//Method to test the service and the server
   	public test():Observable<any>{
   		return this._http.get(this.url + '/test', {headers: this.headers});
+  	}
+
+  	//Method to login a user
+  	public login(form):Observable<any>{
+  		return this._http.post(this.url + '/login', form, {headers: this.headers});
   	}
 
 }
