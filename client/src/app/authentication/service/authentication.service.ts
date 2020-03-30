@@ -24,4 +24,9 @@ export class AuthenticationService {
   		return this._http.post(this.url + '/login', form, {headers: this.headers});
   	}
 
+  	//Method to signup
+  	public signup(form):Observable<any>{
+  		return this._http.post(this.url + '/sing-up', form, {headers: this.headers});
+  	}
+
 }
