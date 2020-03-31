@@ -20,12 +20,12 @@ export class AudioService {
   }
 
   //Method to get the list of all the data to the server (audio)
-  public getAll(data): Observable<any>{
+  public getAudio(data): Observable<any>{
   	if(data === null){
   		return this._http.post(this.url+'/get', {}, {headers: this.headers});
   	}
   	if(typeof(data) === 'string'){
-  		return this._http.post(this.url+'/get'+data, {}, {headers: this.headers});
+  		return this._http.post(this.url+'/get/'+data, {}, {headers: this.headers});
   	}else{
   		return this._http.post(this.url+'/get', data, {headers: this.headers});
   	}

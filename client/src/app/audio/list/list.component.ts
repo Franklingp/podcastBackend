@@ -22,7 +22,7 @@ export class ListComponent implements OnInit {
   //Method to get the data of audio
   public getAudio(key, value){
   	if(key === null){
-  		this._audioService.getAll(null).subscribe(
+  		this._audioService.getAudio(null).subscribe(
 	  		(result) => {
 	  			//console.log(result);
 	  			this.audio = result.audio;
@@ -37,7 +37,7 @@ export class ListComponent implements OnInit {
   	}else{
   		let data = {key: key, value: value};
   		//console.log(data)
-  		this._audioService.getAll(data).subscribe(
+  		this._audioService.getAudio(data).subscribe(
 	  		(result) => {
 	  			this.audio = null;
 	  			//console.log(result);
