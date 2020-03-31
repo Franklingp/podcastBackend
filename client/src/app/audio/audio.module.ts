@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { AudioRoutingModule } from './audio-routing.module';
 import { UploadComponent } from './upload/upload.component';
 import { ListComponent } from './list/list.component';
+import { AudioComponent } from './audio/audio.component';
 
 
 @NgModule({
-  declarations: [UploadComponent, ListComponent],
+  declarations: [UploadComponent, ListComponent, AudioComponent],
   imports: [
     CommonModule,
     AudioRoutingModule

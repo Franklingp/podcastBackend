@@ -60,7 +60,7 @@ const upload = multer({
 //routes
 route.get('/test', audioController.test);
 route.post('/add',upload.fields([{name: 'audio', maxCount: 1}, {name: 'image', maxCount: 1}]),audioController.add);
-route.get('/get/:id?', audioController.getAudio);
+route.post('/get/:id?', audioController.getAudio);
 route.put('/update/:id',upload.fields([{name: 'audio', maxCount: 1}, {name: 'image', maxCount: 1}]) ,audioController.updateAudio);
 route.delete('/remove/:id', audioController.deleteAudio);
 

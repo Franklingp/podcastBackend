@@ -69,6 +69,7 @@ const audioController = {
 					Audio.find({title: value}).sort('-date').exec((error, result) => {return validate(error, result, res)});
 					break;
 				case 'album': 
+					console.log("album dentro");
 					Audio.find({album: value}).sort('-date').exec((error, result) => {return validate(error, result, res)});
 					break;
 				case 'artist': 

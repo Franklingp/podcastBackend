@@ -16,6 +16,11 @@ const routes: Routes = [
 		loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
 	},
 	{
+		path: 'audio',
+		loadChildren: () => import('./audio/audio.module').then(m => m.AudioModule)
+
+	},
+	{
 		path:'**',
 		component: NotfoundComponent
 
