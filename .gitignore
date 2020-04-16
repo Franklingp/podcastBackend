@@ -24,5 +24,6 @@ yarn-error.log*
 
 #multimedia
 
-/uploads/audio/
-/uploads/image/
+/upload/image/*.jpg
+/upload/image/*.jpeg
+/upload/audio/*.mp3
